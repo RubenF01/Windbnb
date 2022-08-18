@@ -1,72 +1,229 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import NavBar from "../components/nav/NavBar";
+import Stay from "../components/stay/Stay";
+import Footer from "../components/footer/Footer";
+import { useState } from "react";
+
+import { Flex, Heading, Text, SimpleGrid } from "@chakra-ui/react";
+
+const staysObj = [
+  {
+    city: "Helsinki",
+    country: "Finland",
+    superHost: false,
+    title: "Stylist apartment in center of the city",
+    rating: 4.4,
+    maxGuests: 3,
+    type: "Entire apartment",
+    beds: 2,
+    photo:
+      "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=2255&q=80",
+  },
+  {
+    city: "Turku",
+    country: "Finland",
+    superHost: false,
+    title: "Nice apartment in center of Helsinki",
+    rating: 4.2,
+    maxGuests: 5,
+    type: "Entire apartment",
+    beds: 3,
+    photo:
+      "https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Helsinki",
+    country: "Finland",
+    superHost: true,
+    title: "Arty interior in 1900 wooden house",
+    rating: 4.5,
+    maxGuests: 10,
+    type: "Entire house",
+    beds: 6,
+    photo:
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Helsinki",
+    country: "Finland",
+    superHost: false,
+    title: "Apartment next to market spuare",
+    rating: 4.48,
+    maxGuests: 3,
+    type: "Entire apartment",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80",
+  },
+  {
+    city: "Turku",
+    country: "Finland",
+    superHost: true,
+    title: "Villa Aurora guest-house",
+    rating: 4.75,
+    maxGuests: 9,
+    type: "Entire house",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2249&q=80",
+  },
+  {
+    city: "Vaasa",
+    country: "Finland",
+    superHost: true,
+    title: "A cosy family house",
+    rating: 4.95,
+    maxGuests: 6,
+    type: "Entire house",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Vaasa",
+    country: "Finland",
+    superHost: false,
+    title: "Lovely Studio near Railway Station",
+    rating: 4.68,
+    maxGuests: 2,
+    type: "Private room",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1505693314120-0d443867891c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2591&q=80",
+  },
+  {
+    city: "Oulu",
+    country: "Finland",
+    superHost: false,
+    title: "Peaceful little home in city center",
+    rating: 4.12,
+    maxGuests: 6,
+    type: "Entire house",
+    beds: 3,
+    photo:
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Oulu",
+    country: "Finland",
+    superHost: false,
+    title: "Beautiful new studio apartment nearby the center",
+    rating: 4.49,
+    maxGuests: 2,
+    type: "Entire apartment",
+    beds: 1,
+    photo:
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2255&q=80",
+  },
+  {
+    city: "Oulu",
+    country: "Finland",
+    superHost: true,
+    title: "Cozy woodhouse flat with wooden sauna",
+    rating: 4.38,
+    maxGuests: 4,
+    type: "Entire house",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=930&q=80",
+  },
+  {
+    city: "Vaasa",
+    country: "Finland",
+    superHost: false,
+    title: "Brand new studio apartment near the harbour",
+    rating: 4.89,
+    maxGuests: 6,
+    type: "Entire apartment",
+    beds: 3,
+    photo:
+      "https://images.unsplash.com/photo-1494203484021-3c454daf695d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Helsinki",
+    country: "Finland",
+    superHost: false,
+    title: "Beautiful and comfortable old wooden house",
+    rating: 4.63,
+    maxGuests: 10,
+    type: "Entire house",
+    beds: null,
+    photo:
+      "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80",
+  },
+  {
+    city: "Turku",
+    country: "Finland",
+    superHost: false,
+    title: "Turku Nordic Home near city center",
+    rating: 4.24,
+    maxGuests: 5,
+    type: "Entire apartment",
+    beds: 3,
+    photo:
+      "https://images.unsplash.com/photo-1519643381401-22c77e60520e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjE3MzYxfQ&auto=format&fit=crop&w=2253&q=80",
+  },
+  {
+    city: "Turku",
+    country: "Finland",
+    superHost: true,
+    title: "Nice 2 room apartment close to everything",
+    rating: 4.34,
+    maxGuests: 6,
+    type: "Entire apartment",
+    beds: 3,
+    photo:
+      "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1275&q=80",
+  },
+];
 
 const Home: NextPage = () => {
+  const [stays, setStays] = useState(staysObj);
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Generated by create next app" />
+        <title>Windbnb</title>
+        <meta name="description" content="Created by Rubén Frías" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <main>
+        <NavBar />
+        <Flex
+          maxW={1250}
+          m="auto"
+          marginTop={85}
+          alignItems="center"
+          justify="space-between"
         >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+          <Heading as="h1" fontSize="24px" cursor="default">
+            Stays in Finland
+          </Heading>
+          <Text
+            fontSize="14px"
+            color="#4F4F4F"
+            fontWeight="medium"
+            cursor="default"
+          >
+            12+ stays
+          </Text>
+        </Flex>
+        <SimpleGrid
+          columns={3}
+          maxW={1250}
+          m="auto"
+          spacing="40px"
+          paddingTop="32px"
+        >
+          {stays.map((stay, index) => (
+            <Stay key={index} {...stay} />
+          ))}
+        </SimpleGrid>
+        <Footer />
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
