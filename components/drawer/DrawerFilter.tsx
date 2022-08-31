@@ -1,11 +1,20 @@
-import { Text, Box } from "@chakra-ui/react";
+import { DrawerFilter } from "../../types/types";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerOverlay,
+} from "@chakra-ui/react";
 
-const Drawer = () => {
+const DrawerFilter = (props: DrawerFilter) => {
   return (
-    <div>
-      <div></div>
-    </div>
+    <Drawer isOpen={props.isOpen} onClose={props.onClose}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerBody></DrawerBody>
+      </DrawerContent>
+    </Drawer>
   );
 };
 
-export default Drawer;
+export default DrawerFilter;

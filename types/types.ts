@@ -9,3 +9,8 @@ export interface Stay {
   beds: number | null;
   photo: string;
 }
+
+export interface DrawerFilter {
+  isOpen: boolean;
+  onClose: () => void;
+}

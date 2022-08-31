@@ -3,9 +3,16 @@ import Head from "next/head";
 import NavBar from "../components/nav/NavBar";
 import Stay from "../components/stay/Stay";
 import Footer from "../components/footer/Footer";
+import DrawerFilter from "../components/drawer/DrawerFilter";
 import { useState } from "react";
 
-import { Flex, Heading, Text, SimpleGrid } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Text,
+  SimpleGrid,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 const staysObj = [
   {
@@ -180,6 +187,7 @@ const staysObj = [
 
 const Home: NextPage = () => {
   const [stays, setStays] = useState(staysObj);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
       <Head>
@@ -221,6 +229,7 @@ const Home: NextPage = () => {
           ))}
         </SimpleGrid>
         <Footer />
+        <DrawerFilter isOpen={isOpen} onClose={onClose} />
       </main>
     </div>
   );
