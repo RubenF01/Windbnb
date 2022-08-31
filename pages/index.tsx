@@ -197,7 +197,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <NavBar />
+        <NavBar onOpen={onOpen} />
         <Flex
           maxW={1250}
           m="auto"
