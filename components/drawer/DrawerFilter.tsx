@@ -11,9 +11,11 @@ import {
   Text,
   HStack,
   VStack,
+  Heading,
+  IconButton,
 } from "@chakra-ui/react";
 
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const DrawerFilter = (props: DrawerFilter) => {
   return (
@@ -21,7 +23,7 @@ const DrawerFilter = (props: DrawerFilter) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerBody>
-          <Flex maxW={1250} mx="auto" align="flex-start" pt="93px">
+          <Flex maxW={1250} mx="auto" align="flex-start" py="93px">
             <Box>
               <Box
                 border="1px"
@@ -59,22 +61,70 @@ const DrawerFilter = (props: DrawerFilter) => {
               </VStack>
             </Box>
 
-            <Box
-              border="1px"
-              w="426px"
-              pl="26px"
-              borderRadius="xl"
-              cursor="pointer"
-              fontSize="9px"
-              fontWeight={800}
-              py="10px"
-              ml="3px"
-            >
-              GUESTS <br />
-              <Box as="span" fontSize="14px" fontWeight={400}>
-                Add guests
+            <Box>
+              <Box
+                border="1px"
+                w="426px"
+                pl="26px"
+                borderRadius="xl"
+                cursor="pointer"
+                fontSize="9px"
+                fontWeight={800}
+                py="10px"
+                ml="3px"
+              >
+                GUESTS <br />
+                <Box as="span" fontSize="14px" fontWeight={400}>
+                  Add guests
+                </Box>
               </Box>
+              <VStack pl="26px" pt="41px" spacing="34px" align="start">
+                <VStack align="start">
+                  <Heading fontSize="14px">Adults</Heading>
+                  <Text fontSize="14px">Ages 13 or above</Text>
+                  <HStack spacing="15px">
+                    <IconButton
+                      aria-label="subtract"
+                      border="1px"
+                      icon={<MinusIcon />}
+                      size="xs"
+                      variant="ghost"
+                    />
+                    <Text>0</Text>
+                    <IconButton
+                      aria-label="add"
+                      border="1px"
+                      icon={<AddIcon />}
+                      size="xs"
+                      variant="ghost"
+                    />
+                  </HStack>
+                </VStack>
+
+                <VStack align="start">
+                  <Heading fontSize="14px">Children</Heading>
+                  <Text fontSize="14px">Ages 2-12</Text>
+                  <HStack spacing="15px">
+                    <IconButton
+                      aria-label="subtract"
+                      border="1px"
+                      icon={<MinusIcon />}
+                      size="xs"
+                      variant="ghost"
+                    />
+                    <Text>0</Text>
+                    <IconButton
+                      aria-label="add"
+                      border="1px"
+                      icon={<AddIcon />}
+                      size="xs"
+                      variant="ghost"
+                    />
+                  </HStack>
+                </VStack>
+              </VStack>
             </Box>
+
             <Button
               h="48px"
               colorScheme="button"
