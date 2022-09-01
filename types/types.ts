@@ -14,3 +14,22 @@ export interface DrawerFilter {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface FilterSlice {
+  activeFilter: string;
+  adultCount: number;
+  childCount: number;
+  selectedCity: string;
+  changeFilter: (filter: string) => void;
+  addAdult: () => void;
+  removeAdult: () => void;
+  addChild: () => void;
+  removeChild: () => void;
+  setSelectedCity: (city: string) => void;
+}
+
+export interface StaySlice {
+  stays: Stay[];
+  filteredStays: Stay[];
+  setFilteredStays: (stays: Stay[]) => void;
+}

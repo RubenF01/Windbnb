@@ -1,4 +1,4 @@
-import { Stay } from "./types/types";
+import { Stay, FilterSlice, StaySlice } from "./types/types";
 import create, { StateCreator } from "zustand";
 
 const staysObj = [
@@ -172,21 +172,11 @@ const staysObj = [
   },
 ];
 
-interface FilterSlice {
-  activeFilter: string;
-  adultCount: number;
-  childCount: number;
-  changeFilter: (filter: string) => void;
-  addAdult: () => void;
-  removeAdult: () => void;
-  addChild: () => void;
-  removeChild: () => void;
-}
-
 const createFilterSlice: StateCreator<FilterSlice> = (set) => ({
   activeFilter: "",
   adultCount: 0,
   childCount: 0,
+  selectedCity: "",
   changeFilter: (filter: string) => set((state) => ({ activeFilter: filter })),
   addAdult: () => set((state) => ({ adultCount: state.adultCount + 1 })),
   removeAdult: () =>
@@ -198,14 +188,13 @@ const createFilterSlice: StateCreator<FilterSlice> = (set) => ({
     set((state) => ({
       childCount: state.childCount <= 0 ? 0 : state.childCount - 1,
     })),
+  setSelectedCity: (city: string) => set((state) => ({ selectedCity: city })),
 });
-
-interface StaySlice {
-  stays: Stay[];
-}
 
 const createStaySlice: StateCreator<StaySlice> = (set) => ({
   stays: staysObj,
+  filteredStays: [],
+  setFilteredStays: (stays: Stay[]) => set((state) => ({ filteredStays: stays })),
 });
 
 export const useStore = create<FilterSlice & StaySlice>()((...a) => ({

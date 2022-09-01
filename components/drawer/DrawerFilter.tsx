@@ -21,16 +21,29 @@ import { SearchIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const DrawerFilter = (props: DrawerFilter) => {
   const activeFilter = useStore((state) => state.activeFilter);
-  const changeFilter = useStore((state) => state.changeFilter);
+  const adultCount = useStore((state) => state.adultCount);
   const stays = useStore((state) => state.stays);
+  const childCount = useStore((state) => state.childCount);
+  const selectedCity = useStore((state) => state.selectedCity);
+  const setSelectedCity = useStore((state) => state.setSelectedCity);
+  const changeFilter = useStore((state) => state.changeFilter);
   const addAdult = useStore((state) => state.addAdult);
   const removeAdult = useStore((state) => state.removeAdult);
   const addChild = useStore((state) => state.addChild);
   const removeChild = useStore((state) => state.removeChild);
-  const adultCount = useStore((state) => state.adultCount);
-  const childCount = useStore((state) => state.childCount);
+  const setFilteredStays = useStore((state) => state.setFilteredStays);
 
   const cities = [...new Set(stays.map((stay) => stay.city))];
+
+  const filterStays = () => {
+    const filteredStays = stays.filter(stay => {
+      return (
+        stay.maxGuests >= adultCount + childCount &&
+        stay.city === selectedCity
+      );
+    })
+    setFilteredStays(filteredStays);
+  }
 
   return (
     <Drawer isOpen={props.isOpen} onClose={props.onClose} placement="top">
@@ -51,8 +64,8 @@ const DrawerFilter = (props: DrawerFilter) => {
                 py="10px"
               >
                 LOCATION <br />
-                <Box as="span" fontSize="14px" fontWeight={400}>
-                  Helsinki, Finland
+                <Box as="span" fontSize="14px" fontWeight={400} color={selectedCity !== "" ? "" : "lightLetters"}>
+                  {selectedCity !== "" ? `${selectedCity}, Finland` : "Add location"}
                 </Box>
               </Box>
 
@@ -64,7 +77,7 @@ const DrawerFilter = (props: DrawerFilter) => {
                 display={activeFilter === "location" ? "block" : "none"}
               >
                 {cities.map((city, index) => (
-                  <HStack key={index} cursor="pointer">
+                  <HStack key={index} cursor="pointer" onClick={() => setSelectedCity(city)}>
                     <Location fill="#4F4F4F" width="19px" />
                     <Text>{city}, Finland</Text>
                   </HStack>
@@ -86,7 +99,7 @@ const DrawerFilter = (props: DrawerFilter) => {
                 ml="3px"
               >
                 GUESTS <br />
-                <Box as="span" fontSize="14px" fontWeight={400}>
+                <Box as="span" fontSize="14px" fontWeight={400} color={childCount === 0 || adultCount === 0 ? "lightLetters" : ""}>
                   Add guests
                 </Box>
               </Box>
@@ -148,6 +161,10 @@ const DrawerFilter = (props: DrawerFilter) => {
             </Box>
 
             <Button
+              onClick={() => {
+                filterStays();
+                props.onClose();
+              }}
               h="48px"
               colorScheme="button"
               ml="140px"

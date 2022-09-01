@@ -13,12 +13,14 @@ const theme = extendTheme({
     brand: {
       500: "#EB5757",
       600: "#4F4F4F",
-      700: "#333333",
+      700: "#333333"
     },
     button: {
       500: "#EB5757",
       600: "#bc4646",
     },
+    separator: "#F2F2F2",
+    lightLetters: "#BDBDBD"
   },
   fonts: {
     heading: `'Montserrat', sans-serif`,

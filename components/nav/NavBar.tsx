@@ -8,6 +8,7 @@ type NavBarProps = {
 };
 
 const NavBar = (props: NavBarProps) => {
+  const selectedCity = useStore((state) => state.selectedCity);
   const changeFilter = useStore((state) => state.changeFilter);
 
   return (
@@ -19,8 +20,11 @@ const NavBar = (props: NavBarProps) => {
       alignItems="center"
     >
       <Logo />
-      <ButtonGroup colorScheme="whiteAlpha">
+      <ButtonGroup colorScheme="whiteAlpha" shadow="base" borderRadius="xl" py="5px">
         <Button
+          borderRight="1px"
+          borderRightRadius="none"
+          borderColor="separator"
           color="black"
           fontSize="14px"
           onClick={() => {
@@ -28,9 +32,12 @@ const NavBar = (props: NavBarProps) => {
             changeFilter("location");
           }}
         >
-          Helsinki, Finland
+          {selectedCity !== "" ? `${selectedCity}, Finland` : "Finland"}
         </Button>
         <Button
+          borderRight="1px"
+          borderRightRadius="none"
+          borderColor="separator"
           color="black"
           fontSize="14px"
           onClick={() => {
@@ -41,6 +48,10 @@ const NavBar = (props: NavBarProps) => {
           Add guests
         </Button>
         <IconButton
+          onClick={() => {
+            props.onOpen();
+            changeFilter("location");
+          }}
           aria-label="Search Stays"
           icon={<SearchIcon color="brand.500" />}
         />
