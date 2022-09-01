@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { DrawerFilter } from "../../types/types";
 import Location from "../../public/location.svg";
+import { useStore } from "../../store";
 import {
   Drawer,
   DrawerBody,
@@ -18,6 +20,18 @@ import {
 import { SearchIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const DrawerFilter = (props: DrawerFilter) => {
+  const activeFilter = useStore((state) => state.activeFilter);
+  const changeFilter = useStore((state) => state.changeFilter);
+  const stays = useStore((state) => state.stays);
+  const addAdult = useStore((state) => state.addAdult);
+  const removeAdult = useStore((state) => state.removeAdult);
+  const addChild = useStore((state) => state.addChild);
+  const removeChild = useStore((state) => state.removeChild);
+  const adultCount = useStore((state) => state.adultCount);
+  const childCount = useStore((state) => state.childCount);
+
+  const cities = [...new Set(stays.map((stay) => stay.city))];
+
   return (
     <Drawer isOpen={props.isOpen} onClose={props.onClose} placement="top">
       <DrawerOverlay />
@@ -26,7 +40,8 @@ const DrawerFilter = (props: DrawerFilter) => {
           <Flex maxW={1250} mx="auto" align="flex-start" py="93px">
             <Box>
               <Box
-                border="1px"
+                onClick={() => changeFilter("location")}
+                border={activeFilter === "location" ? "1px" : "none"}
                 w="426px"
                 pl="26px"
                 borderRadius="xl"
@@ -41,29 +56,26 @@ const DrawerFilter = (props: DrawerFilter) => {
                 </Box>
               </Box>
 
-              <VStack pl="26px" pt="41px" spacing="34px" align="start">
-                <HStack>
-                  <Location fill="#4F4F4F" width="19px" />
-                  <Text>Helsinki, Finland</Text>
-                </HStack>
-                <HStack>
-                  <Location fill="#4F4F4F" width="19px" />
-                  <Text>Turku, Finland</Text>
-                </HStack>
-                <HStack>
-                  <Location fill="#4F4F4F" width="19px" />
-                  <Text>Oulu, Finland</Text>
-                </HStack>
-                <HStack>
-                  <Location fill="#4F4F4F" width="19px" />
-                  <Text>Vaasa, Finland</Text>
-                </HStack>
+              <VStack
+                pl="26px"
+                pt="41px"
+                spacing="34px"
+                align="start"
+                display={activeFilter === "location" ? "block" : "none"}
+              >
+                {cities.map((city, index) => (
+                  <HStack key={index} cursor="pointer">
+                    <Location fill="#4F4F4F" width="19px" />
+                    <Text>{city}, Finland</Text>
+                  </HStack>
+                ))}
               </VStack>
             </Box>
 
             <Box>
               <Box
-                border="1px"
+                onClick={() => changeFilter("guests")}
+                border={activeFilter === "guests" ? "1px" : "none"}
                 w="426px"
                 pl="26px"
                 borderRadius="xl"
@@ -78,20 +90,28 @@ const DrawerFilter = (props: DrawerFilter) => {
                   Add guests
                 </Box>
               </Box>
-              <VStack pl="26px" pt="41px" spacing="34px" align="start">
+              <VStack
+                pl="26px"
+                pt="41px"
+                spacing="34px"
+                align="start"
+                display={activeFilter === "guests" ? "block" : "none"}
+              >
                 <VStack align="start">
                   <Heading fontSize="14px">Adults</Heading>
                   <Text fontSize="14px">Ages 13 or above</Text>
                   <HStack spacing="15px">
                     <IconButton
+                      onClick={removeAdult}
                       aria-label="subtract"
                       border="1px"
                       icon={<MinusIcon />}
                       size="xs"
                       variant="ghost"
                     />
-                    <Text>0</Text>
+                    <Text cursor="default">{adultCount}</Text>
                     <IconButton
+                      onClick={addAdult}
                       aria-label="add"
                       border="1px"
                       icon={<AddIcon />}
@@ -106,14 +126,16 @@ const DrawerFilter = (props: DrawerFilter) => {
                   <Text fontSize="14px">Ages 2-12</Text>
                   <HStack spacing="15px">
                     <IconButton
+                      onClick={removeChild}
                       aria-label="subtract"
                       border="1px"
                       icon={<MinusIcon />}
                       size="xs"
                       variant="ghost"
                     />
-                    <Text>0</Text>
+                    <Text cursor="default">{childCount}</Text>
                     <IconButton
+                      onClick={addChild}
                       aria-label="add"
                       border="1px"
                       icon={<AddIcon />}

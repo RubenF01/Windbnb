@@ -1,19 +1,5 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import NavBar from "../components/nav/NavBar";
-import Stay from "../components/stay/Stay";
-import Footer from "../components/footer/Footer";
-import DrawerFilter from "../components/drawer/DrawerFilter";
-import { useState, useEffect } from "react";
-import { useStore } from "../store";
-
-import {
-  Flex,
-  Heading,
-  Text,
-  SimpleGrid,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Stay } from "./types/types";
+import create, { StateCreator } from "zustand";
 
 const staysObj = [
   {
@@ -186,55 +172,43 @@ const staysObj = [
   },
 ];
 
-const Home: NextPage = () => {
-  const [stays, setStays] = useState(staysObj);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+interface FilterSlice {
+  activeFilter: string;
+  adultCount: number;
+  childCount: number;
+  changeFilter: (filter: string) => void;
+  addAdult: () => void;
+  removeAdult: () => void;
+  addChild: () => void;
+  removeChild: () => void;
+}
 
-  return (
-    <div>
-      <Head>
-        <title>Windbnb</title>
-        <meta name="description" content="Created by Rubén Frías" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+const createFilterSlice: StateCreator<FilterSlice> = (set) => ({
+  activeFilter: "",
+  adultCount: 0,
+  childCount: 0,
+  changeFilter: (filter: string) => set((state) => ({ activeFilter: filter })),
+  addAdult: () => set((state) => ({ adultCount: state.adultCount + 1 })),
+  removeAdult: () =>
+    set((state) => ({
+      adultCount: state.adultCount <= 0 ? 0 : state.adultCount - 1,
+    })),
+  addChild: () => set((state) => ({ childCount: state.childCount + 1 })),
+  removeChild: () =>
+    set((state) => ({
+      childCount: state.childCount <= 0 ? 0 : state.childCount - 1,
+    })),
+});
 
-      <main>
-        <NavBar onOpen={onOpen} />
-        <Flex
-          maxW={1250}
-          m="auto"
-          marginTop={85}
-          alignItems="center"
-          justify="space-between"
-        >
-          <Heading as="h1" fontSize="24px" cursor="default">
-            Stays in Finland
-          </Heading>
-          <Text
-            fontSize="14px"
-            color="#4F4F4F"
-            fontWeight="medium"
-            cursor="default"
-          >
-            12+ stays
-          </Text>
-        </Flex>
-        <SimpleGrid
-          columns={3}
-          maxW={1250}
-          m="auto"
-          spacing="40px"
-          paddingTop="32px"
-        >
-          {stays.map((stay, index) => (
-            <Stay key={index} {...stay} />
-          ))}
-        </SimpleGrid>
-        <Footer />
-        <DrawerFilter isOpen={isOpen} onClose={onClose} />
-      </main>
-    </div>
-  );
-};
+interface StaySlice {
+  stays: Stay[];
+}
 
-export default Home;
+const createStaySlice: StateCreator<StaySlice> = (set) => ({
+  stays: staysObj,
+});
+
+export const useStore = create<FilterSlice & StaySlice>()((...a) => ({
+  ...createFilterSlice(...a),
+  ...createStaySlice(...a),
+}));

@@ -17,8 +17,8 @@ const theme = extendTheme({
     },
     button: {
       500: "#EB5757",
-      600: "#bc4646"
-    }
+      600: "#bc4646",
+    },
   },
   fonts: {
     heading: `'Montserrat', sans-serif`,
