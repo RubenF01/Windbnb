@@ -36,14 +36,13 @@ const DrawerFilter = (props: DrawerFilter) => {
   const cities = [...new Set(stays.map((stay) => stay.city))];
 
   const filterStays = () => {
-    const filteredStays = stays.filter(stay => {
+    const filteredStays = stays.filter((stay) => {
       return (
-        stay.maxGuests >= adultCount + childCount &&
-        stay.city === selectedCity
+        stay.maxGuests >= adultCount + childCount && stay.city === selectedCity
       );
-    })
+    });
     setFilteredStays(filteredStays);
-  }
+  };
 
   return (
     <Drawer isOpen={props.isOpen} onClose={props.onClose} placement="top">
@@ -64,8 +63,15 @@ const DrawerFilter = (props: DrawerFilter) => {
                 py="10px"
               >
                 LOCATION <br />
-                <Box as="span" fontSize="14px" fontWeight={400} color={selectedCity !== "" ? "" : "lightLetters"}>
-                  {selectedCity !== "" ? `${selectedCity}, Finland` : "Add location"}
+                <Box
+                  as="span"
+                  fontSize="14px"
+                  fontWeight={400}
+                  color={selectedCity !== "" ? "" : "lightLetters"}
+                >
+                  {selectedCity !== ""
+                    ? `${selectedCity}, Finland`
+                    : "Add location"}
                 </Box>
               </Box>
 
@@ -77,7 +83,11 @@ const DrawerFilter = (props: DrawerFilter) => {
                 display={activeFilter === "location" ? "block" : "none"}
               >
                 {cities.map((city, index) => (
-                  <HStack key={index} cursor="pointer" onClick={() => setSelectedCity(city)}>
+                  <HStack
+                    key={index}
+                    cursor="pointer"
+                    onClick={() => setSelectedCity(city)}
+                  >
                     <Location fill="#4F4F4F" width="19px" />
                     <Text>{city}, Finland</Text>
                   </HStack>
@@ -99,8 +109,19 @@ const DrawerFilter = (props: DrawerFilter) => {
                 ml="3px"
               >
                 GUESTS <br />
-                <Box as="span" fontSize="14px" fontWeight={400} color={childCount === 0 || adultCount === 0 ? "lightLetters" : ""}>
-                  Add guests
+                <Box
+                  as="span"
+                  fontSize="14px"
+                  fontWeight={400}
+                  color={
+                    childCount === 0 || adultCount === 0 ? "lightLetters" : ""
+                  }
+                >
+                  {adultCount || childCount
+                    ? `${adultCount + childCount} guest${
+                        adultCount + childCount > 1 ? "s" : ""
+                      }`
+                    : "Add guests"}
                 </Box>
               </Box>
               <VStack

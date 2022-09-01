@@ -8,6 +8,8 @@ type NavBarProps = {
 };
 
 const NavBar = (props: NavBarProps) => {
+  const childCount = useStore((state) => state.childCount);
+  const adultCount = useStore((state) => state.adultCount);
   const selectedCity = useStore((state) => state.selectedCity);
   const changeFilter = useStore((state) => state.changeFilter);
 
@@ -20,7 +22,12 @@ const NavBar = (props: NavBarProps) => {
       alignItems="center"
     >
       <Logo />
-      <ButtonGroup colorScheme="whiteAlpha" shadow="base" borderRadius="xl" py="5px">
+      <ButtonGroup
+        colorScheme="whiteAlpha"
+        shadow="base"
+        borderRadius="xl"
+        py="5px"
+      >
         <Button
           borderRight="1px"
           borderRightRadius="none"
@@ -45,7 +52,11 @@ const NavBar = (props: NavBarProps) => {
             changeFilter("guests");
           }}
         >
-          Add guests
+          {adultCount || childCount
+            ? `${adultCount + childCount} guest${
+                adultCount + childCount > 1 ? "s" : ""
+              }`
+            : "Add guests"}
         </Button>
         <IconButton
           onClick={() => {

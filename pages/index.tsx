@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import Head from "next/head";
 import NavBar from "../components/nav/NavBar";
@@ -13,15 +14,14 @@ import {
   Text,
   SimpleGrid,
   useDisclosure,
-  Box
+  Box,
 } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
-  const stays = useStore(state => state.stays);
+  const stays = useStore((state) => state.stays);
   const filteredStays = useStore((state) => state.filteredStays);
   const setFilteredStays = useStore((state) => state.setFilteredStays);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
 
   useEffect(() => {
     setFilteredStays(stays);
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box as="main">
+      <Box as="main" minHeight="full">
         <NavBar onOpen={onOpen} />
         <Flex
           maxW={1250}
@@ -55,11 +55,12 @@ const Home: NextPage = () => {
             fontWeight="medium"
             cursor="default"
           >
-            {stayCount > 12 ? "12+" : stayCount} {stayCount > 1 ? "stays" : "stay"}
+            {stayCount > 12 ? "12+" : stayCount}{" "}
+            {stayCount > 1 || stayCount === 0 ? "stays" : "stay"}
           </Text>
         </Flex>
         <SimpleGrid
-          columns={3}
+          columns={{ base: 1, md: 2, lg: 3 }}
           maxW={1250}
           m="auto"
           spacing="40px"
