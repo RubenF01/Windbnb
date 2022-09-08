@@ -42,7 +42,7 @@ const Home: NextPage = () => {
         <Flex
           maxW={1250}
           m="auto"
-          marginTop={85}
+          marginTop={{ base: 37, md: 85 }}
           alignItems="center"
           justify="space-between"
         >
@@ -63,8 +63,9 @@ const Home: NextPage = () => {
           columns={{ base: 1, md: 2, lg: 3 }}
           maxW={1250}
           m="auto"
-          spacing="40px"
+          spacing={{ base: "10px", sm: "15px", lg: "40px" }}
           paddingTop="32px"
+          justifyItems="center"
         >
           {filteredStays.map((stay, index) => (
             <Stay key={index} {...stay} />

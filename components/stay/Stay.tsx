@@ -4,12 +4,12 @@ import { StarIcon } from "@chakra-ui/icons";
 
 const Stay = (props: Stay) => {
   return (
-    <Flex flexDirection="column" w="395px">
+    <Flex flexDirection="column" w={{ base: "350px", lg: "395px" }}>
       <Image
         src={props.photo}
         alt={props.title}
         w="full"
-        h="269px"
+        h={{ base: "238px", lg: "269px" }}
         objectFit="cover"
         borderRadius={20}
       />

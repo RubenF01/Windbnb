@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { DrawerFilter } from "../../types/types";
 import Location from "../../public/location.svg";
 import { useStore } from "../../store";
